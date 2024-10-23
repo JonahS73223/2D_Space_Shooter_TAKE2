@@ -5,18 +5,22 @@ using UnityEngine;
 public class Spawn_Manager : MonoBehaviour
 {
     [SerializeField]
+    private GameObject _powContainer;
+    [SerializeField]
     private GameObject _enemyContainer;
     [SerializeField]
     private GameObject _enemyPrefab;
     [SerializeField]
     private GameObject _asteriodPrefab;
+    [SerializeField]
+    private GameObject[] _powerUps;
 
 
     private bool _stopSpawning = false;
     // Start is called before the first frame update
     void Start()
     {
-
+        StartCoroutine(PowSpawn());
 
         StartCoroutine(ESpawnRoutine());
         StartCoroutine(ASpawnRoutine());
@@ -55,5 +59,17 @@ public class Spawn_Manager : MonoBehaviour
     public void OnPlayerDeath()
     {
         _stopSpawning = true;
+    }
+
+    IEnumerator PowSpawn()
+    {
+        while (_stopSpawning == false)
+        {
+            Vector3 spawnPoint = new Vector3(Random.Range(-8f, 8f), 7, 0);
+            int randomPowerUp = Random.Range(0, 3);
+            GameObject newPower = Instantiate(_powerUps[randomPowerUp], spawnPoint, Quaternion.identity);
+            newPower.transform.parent = _powContainer.transform;
+            yield return new WaitForSeconds(Random.Range(3f, 7f));
+        }
     }
 }

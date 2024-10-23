@@ -5,9 +5,10 @@ using UnityEngine;
 public class Asteroids : MonoBehaviour
 {
     private float _speed = 2.0f;
+    Player _player;
     void Start()
     {
-        
+        _player = GameObject.Find("Player").GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -37,6 +38,10 @@ public class Asteroids : MonoBehaviour
         if (other.tag == "Laser")
         {
             Destroy(other.gameObject);
+            if (_player != null)
+            {
+                _player.AddScore(Random.Range(5, 10));
+            }
             Destroy(this.gameObject);
         }
     }
