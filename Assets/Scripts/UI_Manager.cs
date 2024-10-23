@@ -15,6 +15,10 @@ public class UI_Manager : MonoBehaviour
     private Text _gameoverText;
     [SerializeField]
     private Text _restartText;
+    [SerializeField]
+    private Text _mainMenuText;
+    [SerializeField]
+    private Text _exitGameText;
 
     private GameManager _gameManager;
     // Start is called before the first frame update
@@ -53,6 +57,8 @@ public class UI_Manager : MonoBehaviour
         _gameManager.GameOver();
         _gameoverText.gameObject.SetActive(true);
         _restartText.gameObject.SetActive(true);
+        _mainMenuText.gameObject.SetActive(true);
+        _exitGameText.gameObject.SetActive(true);
         StartCoroutine(GameOverFlickerRoutine());
     }
 

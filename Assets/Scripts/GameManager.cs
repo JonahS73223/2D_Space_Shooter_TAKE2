@@ -20,6 +20,15 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene(1); // current game scene
         }
+        else if (Input.GetKeyDown(KeyCode.M) && _isGameOver == true)
+        {
+            SceneManager.LoadScene(0); // Main Menu
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape) && _isGameOver == true)
+        {
+            Application.Quit();
+        }
     }
 
     public void GameOver()

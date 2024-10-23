@@ -8,7 +8,8 @@ public class StartAsteroid : MonoBehaviour
     [SerializeField]
     private GameObject _explosionPrefab;
     private Spawn_Manager _spawnManager;
-
+    [SerializeField]
+    private AudioSource _audioSource;
 
     private void Start()
     {
@@ -25,8 +26,9 @@ public class StartAsteroid : MonoBehaviour
         {
             Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
             Destroy(other.gameObject);
+            _audioSource.Play();
             _spawnManager.StartSpawning();
-            Destroy(this.gameObject, 0.25f);
+            Destroy(this.gameObject, 0.55f);
         }
     }
 }

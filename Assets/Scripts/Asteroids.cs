@@ -8,6 +8,8 @@ public class Asteroids : MonoBehaviour
     [SerializeField]
     private GameObject _explosionPrefab;
     Player _player;
+    [SerializeField]
+    private AudioSource _audioSource;
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
@@ -30,23 +32,32 @@ public class Asteroids : MonoBehaviour
         if (other.tag == "Player")
         {
             Player player = other.transform.GetComponent<Player>();
+            
             if (player != null)
             {
                 player.Damage();
             }
             Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
-            Destroy(this.gameObject,0.25f);
+            _audioSource.Play();
+            _speed = 0.2f;
+            Destroy(this.gameObject,0.75f);
         }
 
         if (other.tag == "Laser")
         {
+            
             Destroy(other.gameObject);
             if (_player != null)
             {
                 _player.AddScore(Random.Range(5, 10));
             }
             Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
-            Destroy(this.gameObject, 0.25f);
+            _audioSource.Play();
+            _speed = 0.2f;
+
+            Destroy(GetComponent<Collider2D>());
+
+            Destroy(this.gameObject, 0.75f);
         }
     }
 }

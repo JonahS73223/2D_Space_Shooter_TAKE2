@@ -31,21 +31,37 @@ public class Player : MonoBehaviour
     private GameObject _leftEngine;
     [SerializeField]
     private GameObject _rightEngine;
+
+    [SerializeField]
+    private AudioClip _laserSoundClip;
+    [SerializeField]
+    private AudioSource _audioSource;
     
     void Start()
     {
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<Spawn_Manager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
+        _audioSource = GetComponent<AudioSource>();
+
          if (_spawnManager == null)
         {
             Debug.LogError("Spawn Manager is Null");
         }
 
-         if (_uiManager== null)
+         if (_uiManager == null)
         {
             Debug.LogError("UI_Manager is NULL");
         }
         transform.position = new Vector3(0, -6, 0);
+
+        if (_audioSource == null)
+        {
+            Debug.LogError("AudioSource on player is Null");
+        }
+        else
+        {
+            _audioSource.clip = _laserSoundClip;
+        }
     }
 
     // Update is called once per frame
@@ -98,7 +114,7 @@ public class Player : MonoBehaviour
             _canfire = 1;
            
         }
-       
+        _audioSource.Play();
     }
 
     public void Damage()
