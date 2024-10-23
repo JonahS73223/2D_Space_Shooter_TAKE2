@@ -26,7 +26,12 @@ public class Player : MonoBehaviour
     private bool _isTripleshotActive = false;
     private bool _isSpeedShotActive = false;
     private bool _isShieldActive = false;
-    // Start is called before the first frame update
+
+    [SerializeField]
+    private GameObject _leftEngine;
+    [SerializeField]
+    private GameObject _rightEngine;
+    
     void Start()
     {
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<Spawn_Manager>();
@@ -104,8 +109,19 @@ public class Player : MonoBehaviour
             _shieldVisualizer.SetActive(false);
             return;
         }
+
         _lives--;
-        
+
+
+        if (_lives == 2)
+        {
+            _leftEngine.gameObject.SetActive(true);
+        }
+        else if (_lives == 1)
+        {
+            _rightEngine.gameObject.SetActive(true);
+        }
+        _uiManager.UpdateLives(_lives);
 
         if (_lives < 1)
         {

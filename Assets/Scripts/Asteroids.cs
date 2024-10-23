@@ -5,6 +5,8 @@ using UnityEngine;
 public class Asteroids : MonoBehaviour
 {
     private float _speed = 2.0f;
+    [SerializeField]
+    private GameObject _explosionPrefab;
     Player _player;
     void Start()
     {
@@ -32,7 +34,8 @@ public class Asteroids : MonoBehaviour
             {
                 player.Damage();
             }
-            Destroy(this.gameObject);
+            Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+            Destroy(this.gameObject,0.25f);
         }
 
         if (other.tag == "Laser")
@@ -42,7 +45,8 @@ public class Asteroids : MonoBehaviour
             {
                 _player.AddScore(Random.Range(5, 10));
             }
-            Destroy(this.gameObject);
+            Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+            Destroy(this.gameObject, 0.25f);
         }
     }
 }
