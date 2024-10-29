@@ -36,6 +36,10 @@ public class Player : MonoBehaviour
     private AudioClip _laserSoundClip;
     [SerializeField]
     private AudioSource _audioSource;
+
+    [SerializeField]
+    private GameObject _thusterSize;
+   // private bool _thrusterOff = false;
     
     void Start()
     {
@@ -64,7 +68,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+  
     void Update()
     {
         CalculateMovement();
@@ -94,6 +98,20 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(10.3f, transform.position.y, 0);
         }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            _speed = 10f;
+            _uiManager.Deduct(0.1f);
+            _thusterSize.transform.localScale = new Vector3(1.0f, 1.5f, 0);
+        }
+        else
+        {
+            _uiManager.Add(5);
+            _speed = 5f;
+            _thusterSize.transform.localScale = new Vector3(1.0f, 1.0f, 0);
+        }
+       
     }
 
     void Shoot()
@@ -180,5 +198,16 @@ public class Player : MonoBehaviour
     {
         _score += points;
         _uiManager.UpdateScore(_score);
+    }
+
+    public void ThrusterDeActivate()
+    {
+       // _thrusterOff = true;
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            _speed = 5.0f;
+            _thusterSize.transform.localScale = new Vector3(1.0f, 1.0f, 0);
+        }
     }
 }

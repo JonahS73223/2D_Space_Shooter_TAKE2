@@ -38,6 +38,11 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         CalculateMovement();
+        EnemyShoot();
+    }
+
+    void EnemyShoot()
+    {
 
         if (Time.time > _canFire)
         {
@@ -52,8 +57,6 @@ public class Enemy : MonoBehaviour
             }
         }
     }
-
-
     void CalculateMovement()
     {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);

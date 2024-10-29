@@ -19,11 +19,22 @@ public class UI_Manager : MonoBehaviour
     private Text _mainMenuText;
     [SerializeField]
     private Text _exitGameText;
-
+    [SerializeField]
+    private int _maxValue;
+    [SerializeField]
+    private Image _fillBar;
+    [SerializeField]
+    private int _currentValue;
+    private Player _player;
     private GameManager _gameManager;
     // Start is called before the first frame update
     void Start()
     {
+        _player = GameObject.Find("Player").GetComponent<Player>();
+        _maxValue = 100;
+        _currentValue = _maxValue;
+        _fillBar.fillAmount = 1;
+
         _scoreText.text = "Score: " + 0;
         _gameoverText.gameObject.SetActive(false);
 
@@ -72,4 +83,30 @@ public class UI_Manager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
     }
+
+    public void Add(int i)
+    {
+        _currentValue += 1;
+
+        if (_currentValue > _maxValue)
+        {
+            _currentValue = _maxValue;
+        }
+
+        _fillBar.fillAmount = (float)_currentValue / _maxValue;
+    }
+
+    public void Deduct(float i)
+    {
+        _currentValue -= 1;
+
+        if (_currentValue < 0)
+        {
+            _currentValue = 0;
+            _player.ThrusterDeActivate();
+        }
+
+        _fillBar.fillAmount = (float)_currentValue / _maxValue;
+    }
 }
+
