@@ -10,14 +10,15 @@ public class Player : MonoBehaviour
     private GameObject _laserPrefab;
     [SerializeField]
     private GameObject _trishotPrefab;
-    [SerializeField]
-    private GameObject _shieldVisualizer;
+  
     private float _fireRate = 0.3f;
     private float _canfire = -1;
     [SerializeField]
     private int _lives = 3;
     [SerializeField]
     private int _score;
+    [SerializeField]
+    private int _ammo = 15;
 
     private UI_Manager _uiManager;
 
@@ -36,9 +37,23 @@ public class Player : MonoBehaviour
     private AudioClip _laserSoundClip;
     [SerializeField]
     private AudioSource _audioSource;
+    [SerializeField]
+    private AudioClip _lowAmmoSFX;
+    [SerializeField]
+    private AudioClip _noAmmoSFX;
+    [SerializeField]
+    private AudioClip _ammoRechargeSFX;
 
     [SerializeField]
     private GameObject _thusterSize;
+    [SerializeField]
+    private GameObject _maxShield;
+    [SerializeField]
+    private GameObject _midShield;
+    [SerializeField]
+    private GameObject _lowShield;
+    [SerializeField]
+    private int _shieldPow;
    // private bool _thrusterOff = false;
     
     void Start()
@@ -75,6 +90,12 @@ public class Player : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space) && Time.time > _canfire)
         {
+            if (_ammo == 0)
+            {
+                _ammo = 0;
+                AudioSource.PlayClipAtPoint(_noAmmoSFX, transform.position);
+                return;
+            }
             Shoot();
         }
         
@@ -116,7 +137,7 @@ public class Player : MonoBehaviour
 
     void Shoot()
     {
-       
+        _ammo--;
         _canfire = Time.time + _fireRate;
         if (_isTripleshotActive == true)
         {
@@ -133,15 +154,56 @@ public class Player : MonoBehaviour
            
         }
         _audioSource.Play();
+
+        if (_ammo == 3)
+        {
+            AudioSource.PlayClipAtPoint(_lowAmmoSFX, transform.position);
+
+        }
+        else if (_ammo == 0)
+        {
+            
+                StartCoroutine(AmmoRecharge());
+        }
     }
 
     public void Damage()
     {
         if (_isShieldActive == true)
         {
-            _isShieldActive = false;
-            _shieldVisualizer.SetActive(false);
-            return;
+           // ShieldActive();
+            _shieldPow--;
+
+            switch (_shieldPow)
+            {
+                case 0:
+                    _isShieldActive = false;
+                    _lowShield.SetActive(false);
+                    _midShield.SetActive(false);
+                    _maxShield.SetActive(false);                  
+                    break;
+                case 1:
+                    _lowShield.SetActive(true);
+                    _midShield.SetActive(false);
+                    _maxShield.SetActive(false);
+                    
+                    return;
+                case 2:
+                    _midShield.SetActive(true);
+                    _lowShield.SetActive(false);
+                    _maxShield.SetActive(false);
+                    
+                    return;
+                    
+                case 3:
+                    _maxShield.SetActive(true);
+                    _midShield.SetActive(false);
+                    _lowShield.SetActive(false);
+                    
+                    return;
+
+                    
+            }
         }
 
         _lives--;
@@ -191,7 +253,8 @@ public class Player : MonoBehaviour
     public void ShieldActive()
     {
         _isShieldActive = true;
-        _shieldVisualizer.SetActive(true);
+        _shieldPow = 3;
+        _maxShield.SetActive(true);
     }
 
     public void AddScore(int points)
@@ -202,12 +265,19 @@ public class Player : MonoBehaviour
 
     public void ThrusterDeActivate()
     {
-       // _thrusterOff = true;
+       
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
             _speed = 5.0f;
             _thusterSize.transform.localScale = new Vector3(1.0f, 1.0f, 0);
         }
+    }
+
+    IEnumerator AmmoRecharge()
+    {
+        yield return new WaitForSeconds(3);
+        AudioSource.PlayClipAtPoint(_ammoRechargeSFX, transform.position);
+        _ammo = 15;
     }
 }
