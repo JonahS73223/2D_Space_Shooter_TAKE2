@@ -179,7 +179,7 @@ public class Player : MonoBehaviour
                     _lowShield.SetActive(false);
                     _midShield.SetActive(false);
                     _maxShield.SetActive(false);                  
-                    break;
+                    return;
                 case 1:
                     _lowShield.SetActive(true);
                     _midShield.SetActive(false);
