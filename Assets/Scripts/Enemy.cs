@@ -11,8 +11,9 @@ public class Enemy : MonoBehaviour
     private AudioSource _audioSource;
     [SerializeField]
     private GameObject _laserPrefab;
-    private float _fireRate = 3.0f;
+    private float _fireRate = 4.0f;
     private float _canFire = -1;
+    private bool _enemyDeath = false;
     
     // Start is called before the first frame update
     void Start()
@@ -46,7 +47,7 @@ public class Enemy : MonoBehaviour
 
         if (Time.time > _canFire)
         {
-            _fireRate = Random.Range(3f, 5f);
+            _fireRate = Random.Range(5f, 7f);
             _canFire = Time.time + _fireRate;
             GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
             Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
@@ -55,6 +56,10 @@ public class Enemy : MonoBehaviour
             {
                 lasers[i].AssignEnemyLaser();
             }
+        }
+        if (_enemyDeath == true)
+        {
+            _fireRate = 0;
         }
     }
     void CalculateMovement()
@@ -78,7 +83,9 @@ public class Enemy : MonoBehaviour
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0.2f;
             _audioSource.Play();
+            _enemyDeath = true;
             Destroy(this.gameObject, 2.8f);
+            
         }
 
         if(other.tag == "Laser")
@@ -94,7 +101,9 @@ public class Enemy : MonoBehaviour
             _audioSource.Play();
 
             Destroy(GetComponent<Collider2D>());
-            Destroy(this.gameObject, 2.8f);
+            _enemyDeath = true;
+            Destroy(this.gameObject, 2.4f);
+            
         }
     }
 }

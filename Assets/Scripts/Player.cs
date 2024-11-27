@@ -61,7 +61,7 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<Spawn_Manager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
         _audioSource = GetComponent<AudioSource>();
-
+        _ammo = 15;
          if (_spawnManager == null)
         {
             Debug.LogError("Spawn Manager is Null");
@@ -138,6 +138,7 @@ public class Player : MonoBehaviour
     void Shoot()
     {
         _ammo--;
+        _uiManager.DeductAMMO(_ammo); 
         _canfire = Time.time + _fireRate;
         if (_isTripleshotActive == true)
         {
@@ -151,7 +152,7 @@ public class Player : MonoBehaviour
         if (_isSpeedShotActive == true)
         {
             _canfire = 1;
-           
+            _ammo = 15;
         }
         _audioSource.Play();
 
@@ -160,11 +161,8 @@ public class Player : MonoBehaviour
             AudioSource.PlayClipAtPoint(_lowAmmoSFX, transform.position);
 
         }
-        else if (_ammo == 0)
-        {
-            
-                StartCoroutine(AmmoRecharge());
-        }
+        
+      
     }
 
     public void Damage()
@@ -241,6 +239,7 @@ public class Player : MonoBehaviour
     public void SpeedShotActive()
     {
         _isSpeedShotActive = true;
+        _ammo = 15;
         StartCoroutine(SpeedShotDownRoutine());
     }
 
@@ -248,6 +247,7 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(5f);
         _isSpeedShotActive = false;
+        _ammo = 0;
     }
 
     public void ShieldActive()
@@ -274,10 +274,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    IEnumerator AmmoRecharge()
+    public void AmmoRecharge()
     {
-        yield return new WaitForSeconds(3);
+        
         AudioSource.PlayClipAtPoint(_ammoRechargeSFX, transform.position);
+        _uiManager.AddAMMO(15);
         _ammo = 15;
+        
     }
 }

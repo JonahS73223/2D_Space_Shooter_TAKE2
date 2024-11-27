@@ -27,6 +27,12 @@ public class UI_Manager : MonoBehaviour
     private int _currentValue;
     private Player _player;
     private GameManager _gameManager;
+    [SerializeField]
+    private int _maxAmmo;
+    [SerializeField]
+    private Image _ammoBar;
+    [SerializeField]
+    private int _currentAmmo;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +40,10 @@ public class UI_Manager : MonoBehaviour
         _maxValue = 100;
         _currentValue = _maxValue;
         _fillBar.fillAmount = 1;
+
+        _maxAmmo = 15;
+        _currentAmmo = _maxAmmo;
+        _ammoBar.fillAmount = 1;
 
         _scoreText.text = "Score: " + 0;
         _gameoverText.gameObject.SetActive(false);
@@ -107,6 +117,30 @@ public class UI_Manager : MonoBehaviour
         }
 
         _fillBar.fillAmount = (float)_currentValue / _maxValue;
+    }
+
+    public void AddAMMO(int i)
+    {
+        _currentAmmo += 15;
+
+        if (_currentAmmo > _maxAmmo)
+        {
+            _currentAmmo = _maxAmmo;
+        }
+
+        _ammoBar.fillAmount = (int)_currentAmmo / _maxAmmo;
+    }
+
+    public void DeductAMMO(float i)
+    {
+        _currentAmmo -= 1;
+
+        if (_currentAmmo < 0)
+        {
+            _currentAmmo = 0;
+        }
+
+        _ammoBar.fillAmount = (float)_currentAmmo / _maxAmmo;
     }
 }
 

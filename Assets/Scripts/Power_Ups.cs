@@ -47,6 +47,9 @@ public class Power_Ups : MonoBehaviour
                     case 2:
                         player.ShieldActive();
                         break;
+                    case 3:
+                        player.AmmoRecharge();
+                        break;
                 }
             }
 
