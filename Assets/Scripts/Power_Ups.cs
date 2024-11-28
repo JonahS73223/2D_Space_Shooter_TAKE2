@@ -50,6 +50,9 @@ public class Power_Ups : MonoBehaviour
                     case 3:
                         player.AmmoRecharge();
                         break;
+                    case 4:                       
+                        player.HealthRegen();
+                        break;
                 }
             }
 

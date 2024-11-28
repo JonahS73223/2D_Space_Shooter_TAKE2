@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     private float _canfire = -1;
     [SerializeField]
     private int _lives = 3;
+    private bool _ismaxLives = true;
     [SerializeField]
     private int _score;
     [SerializeField]
@@ -54,7 +55,7 @@ public class Player : MonoBehaviour
     private GameObject _lowShield;
     [SerializeField]
     private int _shieldPow;
-   // private bool _thrusterOff = false;
+   // private bool  = false;
     
     void Start()
     {
@@ -87,7 +88,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         CalculateMovement();
-
+        
         if (Input.GetKey(KeyCode.Space) && Time.time > _canfire)
         {
             if (_ammo == 0)
@@ -98,7 +99,11 @@ public class Player : MonoBehaviour
             }
             Shoot();
         }
-        
+        if (_lives > 3)
+        {
+            _lives = 3;
+        }
+
     }
 
     void CalculateMovement()
@@ -203,9 +208,8 @@ public class Player : MonoBehaviour
                     
             }
         }
-
         _lives--;
-
+       
 
         if (_lives == 2)
         {
@@ -281,5 +285,37 @@ public class Player : MonoBehaviour
         _uiManager.AddAMMO(15);
         _ammo = 15;
         
+    }
+
+    public void HealthRegen()
+    {
+        _lives += 1;
+        if (_ismaxLives == true)
+        {
+            _lives = 3;
+            _uiManager.UpdateLives(_lives);
+
+        }
+
+        if (_lives == 3)
+        {
+            _leftEngine.gameObject.SetActive(false);
+            _rightEngine.gameObject.SetActive(false);
+
+            _ismaxLives = true;
+        }
+        else if (_lives == 2)
+        {
+            _leftEngine.gameObject.SetActive(true);
+            _ismaxLives = false;
+        }
+        else if (_lives == 1)
+        {
+            _rightEngine.gameObject.SetActive(true);
+            _ismaxLives = false;
+        }
+
+        _uiManager.UpdateLives(_lives);
+
     }
 }
