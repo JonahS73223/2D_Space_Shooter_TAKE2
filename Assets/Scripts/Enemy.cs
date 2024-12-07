@@ -105,5 +105,21 @@ public class Enemy : MonoBehaviour
             Destroy(this.gameObject, 2.4f);
             
         }
+
+        if(other.tag == "Shieldshot")
+        {
+            if (_player != null)
+            {
+                _player.AddScore(Random.Range(5, 10));
+            }
+
+            _anim.SetTrigger("OnEnemyDeath");
+            _speed = 0.2f;
+            _audioSource.Play();
+
+            Destroy(GetComponent<Collider2D>());
+            _enemyDeath = true;
+            Destroy(this.gameObject, 2.4f);
+        }
     }
 }

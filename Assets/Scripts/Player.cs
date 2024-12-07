@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     private GameObject _laserPrefab;
     [SerializeField]
     private GameObject _trishotPrefab;
+    [SerializeField]
+    private GameObject _shieldshotPrefab;
   
     private float _fireRate = 0.3f;
     private float _canfire = -1;
@@ -28,6 +30,7 @@ public class Player : MonoBehaviour
     private bool _isTripleshotActive = false;
     private bool _isSpeedShotActive = false;
     private bool _isShieldActive = false;
+    private bool _isShieldshotActive = false;
 
     [SerializeField]
     private GameObject _leftEngine;
@@ -55,6 +58,8 @@ public class Player : MonoBehaviour
     private GameObject _lowShield;
     [SerializeField]
     private int _shieldPow;
+
+   
    // private bool  = false;
     
     void Start()
@@ -82,6 +87,8 @@ public class Player : MonoBehaviour
         {
             _audioSource.clip = _laserSoundClip;
         }
+
+        
     }
 
   
@@ -167,6 +174,11 @@ public class Player : MonoBehaviour
 
         }
         
+        if (_isShieldshotActive == true)
+        {
+            
+            Instantiate(_shieldshotPrefab, transform.position, Quaternion.identity);
+        }
       
     }
 
@@ -240,18 +252,38 @@ public class Player : MonoBehaviour
         _isTripleshotActive = false;
     }
 
+    public void ShieldShotActive()
+    {
+        _isShieldshotActive = true;
+        _ammo = 15;
+        _uiManager.AddAMMO(15);
+        AudioSource.PlayClipAtPoint(_ammoRechargeSFX, transform.position);
+        _fireRate = 1f;
+        StartCoroutine(ShieldShotDownRoutine());
+    }
+
+    IEnumerator ShieldShotDownRoutine()
+    {
+        yield return new WaitForSeconds(7f);
+        _fireRate = 0.3f;
+        _isShieldshotActive = false;
+    }
     public void SpeedShotActive()
     {
         _isSpeedShotActive = true;
         _ammo = 15;
+        _uiManager.AddAMMO(15);
+        AudioSource.PlayClipAtPoint(_ammoRechargeSFX, transform.position);
         StartCoroutine(SpeedShotDownRoutine());
     }
 
     IEnumerator SpeedShotDownRoutine()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
         _isSpeedShotActive = false;
         _ammo = 0;
+        
+        
     }
 
     public void ShieldActive()

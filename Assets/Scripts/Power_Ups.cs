@@ -50,10 +50,13 @@ public class Power_Ups : MonoBehaviour
                     case 3:
                         player.AmmoRecharge();
                         break;
-                    case 4:                       
+                    case 4:
                         player.HealthRegen();
                         break;
-                }
+                    case 5:
+                        player.ShieldShotActive();
+                        break;
+                }       
             }
 
             Destroy(this.gameObject);

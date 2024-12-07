@@ -14,7 +14,9 @@ public class Spawn_Manager : MonoBehaviour
     private GameObject _asteriodPrefab;
     [SerializeField]
     private GameObject[] _powerUps;
-
+    [SerializeField]
+    private GameObject[] _powerUpSP;
+   
 
     private bool _stopSpawning = false;
     // Start is called before the first frame update
@@ -25,16 +27,16 @@ public class Spawn_Manager : MonoBehaviour
     public void StartSpawning()
     {
         StartCoroutine(PowSpawn());
-
         StartCoroutine(ESpawnRoutine());
         StartCoroutine(ASpawnRoutine());
+        StartCoroutine(SpecialtySpawn());
     }
-    // Update is called once per frame
+    
     void Update()
     {
         
     }
-
+   
     IEnumerator ESpawnRoutine()
     {
         while (_stopSpawning == false)
@@ -49,6 +51,7 @@ public class Spawn_Manager : MonoBehaviour
 
     IEnumerator ASpawnRoutine()
     {
+        
         while (_stopSpawning == false)
         {
             Vector3 spawnPoint = new Vector3(Random.Range(-8f, 8f), 7, 0);
@@ -69,10 +72,23 @@ public class Spawn_Manager : MonoBehaviour
         while (_stopSpawning == false)
         {
             Vector3 spawnPoint = new Vector3(Random.Range(-8f, 8f), 7, 0);
-            int randomPowerUp = Random.Range(0, 5);
+            int randomPowerUp = Random.Range(0, 4);
             GameObject newPower = Instantiate(_powerUps[randomPowerUp], spawnPoint, Quaternion.identity);
             newPower.transform.parent = _powContainer.transform;
             yield return new WaitForSeconds(Random.Range(3f, 7f));
+        }
+    }
+
+    IEnumerator SpecialtySpawn()
+    {
+        yield return new WaitForSeconds(7f);
+        while (_stopSpawning == false)
+        {
+            Vector3 spawnPoint = new Vector3(Random.Range(-8f, 8f), 7, 0);
+            int randomSPPowerUp = Random.Range(0, 2);
+            GameObject newPower = Instantiate(_powerUpSP[randomSPPowerUp], spawnPoint, Quaternion.identity);
+            newPower.transform.parent = _powContainer.transform;
+            yield return new WaitForSeconds(Random.Range(15f, 20f));
         }
     }
 }
