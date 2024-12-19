@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Main_Menu.unity
     guid: ebe08f85e24acff419583d4bb2251cab
   - enabled: 1
-    path: Assets/Scenes/Ammo Bar.unity
-    guid: 781df9128f8f975448a7122bdb7cfb1c
+    path: Assets/Scenes/ShieldShot_Imp.unity
+    guid: d4bae18618daead42bb62966d1cbb25a
   m_configObjects: {}

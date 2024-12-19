@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     private int _ammo = 15;
 
     private UI_Manager _uiManager;
-
+    private CameraShake _cameraShake;
     private Spawn_Manager _spawnManager;
 
     private bool _isTripleshotActive = false;
@@ -66,6 +66,7 @@ public class Player : MonoBehaviour
     {
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<Spawn_Manager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
+        _cameraShake = GameObject.Find("Main Camera").GetComponent<CameraShake>();
         _audioSource = GetComponent<AudioSource>();
         _ammo = 15;
          if (_spawnManager == null)
@@ -221,7 +222,7 @@ public class Player : MonoBehaviour
             }
         }
         _lives--;
-       
+        _cameraShake.ShakePlayer();
 
         if (_lives == 2)
         {
