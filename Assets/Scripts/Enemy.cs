@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    private float _speed = 3.0f;
+   
     private Player _player;
     private Animator _anim;
+    private Spawn_Manager _spawnManager;
+
     [SerializeField]
     private AudioSource _audioSource;
     [SerializeField]
     private GameObject _laserPrefab;
+
+    private float _speed = 3.0f;
     private float _fireRate = 4.0f;
     private float _canFire = -1;
     private bool _enemyDeath = false;
@@ -18,6 +22,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<Spawn_Manager>();
         _player = GameObject.Find("Player").GetComponent<Player>();
         _audioSource = GetComponent<AudioSource>();
 
@@ -38,16 +43,52 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CalculateMovement();
+
+        EnemyMovement();
         EnemyShoot();
+    }
+
+    void EnemyMovement()
+    {
+        if (_spawnManager._enemymovementID == 0) 
+        {
+            CalculateMovementDown();
+        }
+
+        if (_spawnManager._enemymovementID == 1)
+        {
+            CalculateMovementRightDown();
+        }
+
+        if (_spawnManager._enemymovementID == 2)
+        {
+            CalculateMovementLeftDown();
+        }
     }
 
     void EnemyShoot()
     {
 
+        if (_enemyDeath == true)
+        {
+            _fireRate = 0;
+            _canFire = Time.time + _fireRate;
+        }
+
+        if (_spawnManager._enemymovementID == 1)
+        {
+            _fireRate = 1.0f;
+           
+        }
+        else if (_spawnManager._enemymovementID == 2)
+        {
+            _fireRate = 1.0f;
+            
+        }
+       
         if (Time.time > _canFire)
         {
-            _fireRate = Random.Range(5f, 7f);
+            _fireRate = Random.Range(2f, 3f);
             _canFire = Time.time + _fireRate;
             GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
             Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
@@ -57,18 +98,37 @@ public class Enemy : MonoBehaviour
                 lasers[i].AssignEnemyLaser();
             }
         }
-        if (_enemyDeath == true)
-        {
-            _fireRate = 0;
-        }
+       
     }
-    void CalculateMovement()
+    void CalculateMovementDown()
     {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
         if (transform.position.y <= -8)
         {
             transform.position = new Vector3(Random.Range(-8.3f, 8.3f), 8, 0);
+        }
+    }
+
+    void CalculateMovementLeftDown()
+    {
+        transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        transform.Translate(Vector3.left * _speed * Time.deltaTime);
+
+        if (transform.position.y <= -8)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
+    void CalculateMovementRightDown()
+    {
+        transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        transform.Translate(Vector3.right * _speed * Time.deltaTime);
+
+        if (transform.position.y <= -8)
+        {
+            Destroy(this.gameObject);
         }
     }
     private void OnTriggerEnter2D(Collider2D other)
@@ -80,10 +140,12 @@ public class Enemy : MonoBehaviour
             {
                 player.Damage();
             }
+
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0.2f;
             _audioSource.Play();
             _enemyDeath = true;
+            
             Destroy(this.gameObject, 2.8f);
             
         }
@@ -95,7 +157,7 @@ public class Enemy : MonoBehaviour
             {
                 _player.AddScore(Random.Range(5, 10));
             }
-
+           
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0.2f;
             _audioSource.Play();
@@ -112,7 +174,7 @@ public class Enemy : MonoBehaviour
             {
                 _player.AddScore(Random.Range(5, 10));
             }
-
+           
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0.2f;
             _audioSource.Play();
@@ -120,6 +182,7 @@ public class Enemy : MonoBehaviour
             Destroy(GetComponent<Collider2D>());
             _enemyDeath = true;
             Destroy(this.gameObject, 2.4f);
+            
         }
     }
 }

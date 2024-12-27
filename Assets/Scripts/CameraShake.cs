@@ -12,15 +12,7 @@ public class CameraShake : MonoBehaviour
     private float _shakeStrength = 0.2f;
     private bool isShaking = false;
 
-    private void Start()
-    {
-       
-
-    }
-    void Update()
-    {
-        
-    }
+ 
 
     private IEnumerator Shake()
     {

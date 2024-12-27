@@ -68,6 +68,7 @@ public class UI_Manager : MonoBehaviour
         
         if (currentLives == 0)
         {
+            currentLives = 0;
             GameOverSequence();
             
         }
