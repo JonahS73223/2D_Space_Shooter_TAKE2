@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
@@ -8,7 +6,7 @@ public class Enemy : MonoBehaviour
     private Player _player;
     private Animator _anim;
     private Spawn_Manager _spawnManager;
-
+    private EnemyWaveManager _enemywaveManager;
     [SerializeField]
     private AudioSource _audioSource;
     [SerializeField]
@@ -22,6 +20,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _enemywaveManager = GameObject.Find("EnemyWaveManager").GetComponent<EnemyWaveManager>();
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<Spawn_Manager>();
         _player = GameObject.Find("Player").GetComponent<Player>();
         _audioSource = GetComponent<AudioSource>();
@@ -117,7 +116,7 @@ public class Enemy : MonoBehaviour
 
         if (transform.position.y <= -8)
         {
-            Destroy(this.gameObject);
+            transform.position = new Vector3(Random.Range(0f, 8.3f), 8, 0);
         }
     }
 
@@ -128,7 +127,7 @@ public class Enemy : MonoBehaviour
 
         if (transform.position.y <= -8)
         {
-            Destroy(this.gameObject);
+            transform.position = new Vector3(Random.Range(-8.3f, 0f), 8, 0);
         }
     }
     private void OnTriggerEnter2D(Collider2D other)
@@ -145,7 +144,7 @@ public class Enemy : MonoBehaviour
             _speed = 0.2f;
             _audioSource.Play();
             _enemyDeath = true;
-            
+            _enemywaveManager.CountUpdate();
             Destroy(this.gameObject, 2.8f);
             
         }
@@ -161,6 +160,7 @@ public class Enemy : MonoBehaviour
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0.2f;
             _audioSource.Play();
+            _enemywaveManager.CountUpdate();
 
             Destroy(GetComponent<Collider2D>());
             _enemyDeath = true;
@@ -178,6 +178,7 @@ public class Enemy : MonoBehaviour
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0.2f;
             _audioSource.Play();
+            _enemywaveManager.CountUpdate();
 
             Destroy(GetComponent<Collider2D>());
             _enemyDeath = true;

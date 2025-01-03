@@ -27,7 +27,7 @@ public class StartAsteroid : MonoBehaviour
             Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
             Destroy(other.gameObject);
             _audioSource.Play();
-            _spawnManager.StartSpawning();
+            _spawnManager.StartSpawning1();
             Destroy(this.gameObject, 0.55f);
         }
     }

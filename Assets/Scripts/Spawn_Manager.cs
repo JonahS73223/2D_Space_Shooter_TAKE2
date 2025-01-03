@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Spawn_Manager : MonoBehaviour
 {
+    
     [SerializeField]
     private GameObject _powContainer;
     [SerializeField]
@@ -16,24 +17,42 @@ public class Spawn_Manager : MonoBehaviour
     private GameObject[] _powerUps;
     [SerializeField]
     private GameObject[] _powerUpSP;
-   
-    
-    public int _enemymovementID;
 
+    [SerializeField]
+    private bool _stopSpawningPowerups;
+   
+    public int _enemymovementID;
+    private EnemyWaveManager _enemywaveManager;
     private bool _stopSpawning = false;
     // Start is called before the first frame update
     void Start()
     {
-
+        _enemywaveManager = GameObject.Find("EnemyWaveManager").GetComponent<EnemyWaveManager>();
     }
-    public void StartSpawning()
+    public void StartSpawning1()
     {
+        _stopSpawning = false;
+
         StartCoroutine(PowSpawn());
         StartCoroutine(ESpawnRoutine());
         StartCoroutine(ASpawnRoutine());
         StartCoroutine(SpecialtySpawn());
+
+        
+    }
+
+    public void StartSpawning2()
+    {
+        _stopSpawning = false;
+        
+        StartCoroutine(PowSpawn());
+        StartCoroutine(SpecialtySpawn());
+        StartCoroutine(ESpawnRoutine2());
+        StartCoroutine(ASpawnRoutine());
+        
     }
     
+
     void Update()
     {
         
@@ -43,7 +62,24 @@ public class Spawn_Manager : MonoBehaviour
     {
         while (_stopSpawning == false)
         {
+            _enemywaveManager.QtyUpdate();
+            Vector3 spawnPoint0 = new Vector3(Random.Range(-8f, 8f), 7, 0);
+           GameObject newEnemy0 = Instantiate(_enemyPrefab, spawnPoint0, Quaternion.identity);
+           newEnemy0.transform.parent = _enemyContainer.transform;
+            yield return new WaitForSeconds(5.0f);
+        }
+        
+    }
+
+    IEnumerator ESpawnRoutine2()
+    {
+        yield return new WaitForSeconds(5f);
+        while (_stopSpawning == false)
+        {
+            
+            _enemywaveManager.QtyUpdate();
             _enemymovementID = Random.Range(0, 3);
+            
             switch (_enemymovementID)
             {
                 case 0: //Down
@@ -62,23 +98,31 @@ public class Spawn_Manager : MonoBehaviour
                     newEnemy2.transform.parent = _enemyContainer.transform;
                     break;
             }
-            yield return new WaitForSeconds(3.0f);
-        }
-    }
-
-    IEnumerator ASpawnRoutine()
-    {
-        
-        while (_stopSpawning == false)
-        {
-            Vector3 spawnPoint = new Vector3(Random.Range(-8f, 8f), 7, 0);
-            _asteriodPrefab.transform.localScale = new Vector3(Random.Range(0.5f, 1.0f), Random.Range(0.5f, 1.0f), 0);
-            GameObject newAsteroid = Instantiate(_asteriodPrefab, spawnPoint, Quaternion.identity);
-            newAsteroid.transform.parent = _enemyContainer.transform; 
             yield return new WaitForSeconds(5.0f);
         }
     }
 
+    
+
+
+    IEnumerator ASpawnRoutine()
+    {
+        yield return new WaitForSeconds(3f);
+        while (_stopSpawning == false)
+        {
+            
+            Vector3 spawnPoint = new Vector3(Random.Range(-8f, 8f), 7, 0);
+            _asteriodPrefab.transform.localScale = new Vector3(Random.Range(0.5f, 1.0f), Random.Range(0.5f, 1.0f), 0);
+            GameObject newAsteroid = Instantiate(_asteriodPrefab, spawnPoint, Quaternion.identity);
+            newAsteroid.transform.parent = _enemyContainer.transform; 
+            yield return new WaitForSeconds(8.0f);
+        }
+    }
+    
+   public void StopSpawning()
+    {
+        _stopSpawning = true;
+    }
     public void OnPlayerDeath()
     {
         _stopSpawning = true;
@@ -108,4 +152,6 @@ public class Spawn_Manager : MonoBehaviour
             yield return new WaitForSeconds(Random.Range(15f, 20f));
         }
     }
+
+    
 }

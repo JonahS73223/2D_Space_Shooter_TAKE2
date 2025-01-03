@@ -163,9 +163,9 @@ public class Player : MonoBehaviour
         }
 
         if (_isSpeedShotActive == true)
-        {
-            _canfire = 1;
-            _ammo = 15;
+        {          
+            _fireRate = 0.05f;
+            
         }
         _audioSource.Play();
 
@@ -272,6 +272,7 @@ public class Player : MonoBehaviour
     public void SpeedShotActive()
     {
         _isSpeedShotActive = true;
+        
         _ammo = 15;
         _uiManager.AddAMMO(15);
         AudioSource.PlayClipAtPoint(_ammoRechargeSFX, transform.position);
@@ -282,9 +283,8 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         _isSpeedShotActive = false;
-        _ammo = 0;
         
-        
+        _fireRate = 0.3f;
     }
 
     public void ShieldActive()

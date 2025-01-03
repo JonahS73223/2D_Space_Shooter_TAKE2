@@ -33,7 +33,9 @@ public class UI_Manager : MonoBehaviour
     private Image _ammoBar;
     [SerializeField]
     private int _currentAmmo;
-    // Start is called before the first frame update
+    [SerializeField]
+    private Text _enemyQtyText;
+ 
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
@@ -75,7 +77,7 @@ public class UI_Manager : MonoBehaviour
 
     }
 
-    void GameOverSequence()
+    public void GameOverSequence()
     {
         _gameManager.GameOver();
         _gameoverText.gameObject.SetActive(true);
@@ -144,5 +146,13 @@ public class UI_Manager : MonoBehaviour
 
         _ammoBar.fillAmount = (float)_currentAmmo / _maxAmmo;
     }
+
+
+    public void UpdateEnemyQty(int enemyQty)
+    {
+        _enemyQtyText.text = "Enemies Left: " + enemyQty.ToString();
+    }
+
+
 }
 
