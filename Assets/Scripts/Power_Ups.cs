@@ -56,6 +56,9 @@ public class Power_Ups : MonoBehaviour
                     case 5:
                         player.ShieldShotActive();
                         break;
+                    case 6:
+                        player.AmmoStealActive();
+                        break;
                 }       
             }
 

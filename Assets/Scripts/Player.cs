@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
     private bool _isSpeedShotActive = false;
     private bool _isShieldActive = false;
     private bool _isShieldshotActive = false;
+    
 
     [SerializeField]
     private GameObject _leftEngine;
@@ -181,6 +182,7 @@ public class Player : MonoBehaviour
             Instantiate(_shieldshotPrefab, transform.position, Quaternion.identity);
         }
       
+        
     }
 
     public void Damage()
@@ -287,6 +289,11 @@ public class Player : MonoBehaviour
         _fireRate = 0.3f;
     }
 
+    public void AmmoStealActive()
+    {
+        _ammo = 0;
+        _uiManager.DeductAMMO(15);
+    }
     public void ShieldActive()
     {
         _isShieldActive = true;
