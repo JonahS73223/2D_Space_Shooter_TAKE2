@@ -292,7 +292,7 @@ public class Player : MonoBehaviour
     public void AmmoStealActive()
     {
         _ammo = 0;
-        _uiManager.DeductAMMO(15);
+        _uiManager.DeductAMMO(_ammo);
     }
     public void ShieldActive()
     {

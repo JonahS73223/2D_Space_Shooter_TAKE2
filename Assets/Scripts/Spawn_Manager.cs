@@ -12,6 +12,8 @@ public class Spawn_Manager : MonoBehaviour
     [SerializeField]
     private GameObject _enemyPrefab;
     [SerializeField]
+    private GameObject _lightingEnemyPrefab;
+    [SerializeField]
     private GameObject _asteriodPrefab;
     [SerializeField]
     private GameObject[] _powerUps;
@@ -20,7 +22,7 @@ public class Spawn_Manager : MonoBehaviour
 
     [SerializeField]
     private bool _stopSpawningPowerups;
-   
+    
     public int _enemymovementID;
     private EnemyWaveManager _enemywaveManager;
     private bool _stopSpawning = false;
@@ -37,8 +39,8 @@ public class Spawn_Manager : MonoBehaviour
         StartCoroutine(ESpawnRoutine());
         StartCoroutine(ASpawnRoutine());
         StartCoroutine(SpecialtySpawn());
+        StartCoroutine(LEnemySpawn());
 
-        
     }
 
     public void StartSpawning2()
@@ -49,6 +51,7 @@ public class Spawn_Manager : MonoBehaviour
         StartCoroutine(SpecialtySpawn());
         StartCoroutine(ESpawnRoutine2());
         StartCoroutine(ASpawnRoutine());
+        StartCoroutine(LEnemySpawn());
         
     }
     
@@ -153,5 +156,17 @@ public class Spawn_Manager : MonoBehaviour
         }
     }
 
-    
+    IEnumerator LEnemySpawn()
+    {
+        yield return new WaitForSeconds(5f);
+        while (_stopSpawning == false)
+        {
+            Vector3 spawnpoint = new Vector3(Random.Range(-6f, 6f), 7, 0);
+            GameObject newEnemy = Instantiate(_lightingEnemyPrefab, spawnpoint, Quaternion.identity);
+            newEnemy.transform.parent = _enemyContainer.transform;
+            yield return new WaitForSeconds(8f);
+        }
+    }
+        
+
 }
