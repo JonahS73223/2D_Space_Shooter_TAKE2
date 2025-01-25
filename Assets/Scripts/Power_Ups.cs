@@ -9,10 +9,13 @@ public class Power_Ups : MonoBehaviour
     private int _powerupID;
     [SerializeField]
     private AudioClip _audioClip;
+    private Player _player;
+  
     // Start is called before the first frame update
     void Start()
     {
-        
+        _player = GameObject.Find("Player").GetComponent<Player>();
+       
     }
 
     // Update is called once per frame
@@ -24,6 +27,8 @@ public class Power_Ups : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        PowerupAbsorb();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -63,6 +68,21 @@ public class Power_Ups : MonoBehaviour
             }
 
             Destroy(this.gameObject);
+        }
+       
+        
+    }
+
+    private void MoveTowardsPlayer()
+    {
+        transform.position = Vector2.Lerp(transform.position, _player.transform.position, _speed * Time.deltaTime);
+    }
+
+    private void PowerupAbsorb()
+    {
+        if (Input.GetKey(KeyCode.C))
+        {
+            MoveTowardsPlayer();
         }
     }
 }

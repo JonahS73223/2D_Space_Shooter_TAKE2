@@ -6,6 +6,8 @@ public class Laser : MonoBehaviour
 {
     private float _speed = 7.0f;
     private bool _isEnemyLaser = false;
+    [SerializeField]
+    private AudioClip _audioClip;
   
 
    
@@ -68,6 +70,15 @@ public class Laser : MonoBehaviour
             }
         }
 
-       
+        if (other.tag == "Powerup" && _isEnemyLaser == true)
+        {
+            AudioSource.PlayClipAtPoint(_audioClip, transform.position);
+            Destroy(other.gameObject);
+            Destroy(this.gameObject);
+
+        }
+
+
+
     }
 }

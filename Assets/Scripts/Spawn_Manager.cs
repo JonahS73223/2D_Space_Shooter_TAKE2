@@ -16,6 +16,8 @@ public class Spawn_Manager : MonoBehaviour
     [SerializeField]
     private GameObject _asteriodPrefab;
     [SerializeField]
+    private GameObject _rammerPrefab;
+    [SerializeField]
     private GameObject[] _powerUps;
     [SerializeField]
     private GameObject[] _powerUpSP;
@@ -40,6 +42,7 @@ public class Spawn_Manager : MonoBehaviour
         StartCoroutine(ASpawnRoutine());
         StartCoroutine(SpecialtySpawn());
         StartCoroutine(LEnemySpawn());
+        StartCoroutine(RamSpawn());
 
     }
 
@@ -52,7 +55,7 @@ public class Spawn_Manager : MonoBehaviour
         StartCoroutine(ESpawnRoutine2());
         StartCoroutine(ASpawnRoutine());
         StartCoroutine(LEnemySpawn());
-        
+        StartCoroutine(RamSpawn());
     }
     
 
@@ -105,7 +108,18 @@ public class Spawn_Manager : MonoBehaviour
         }
     }
 
-    
+    IEnumerator RamSpawn()
+    {
+        yield return new WaitForSeconds(4f);
+        while (_stopSpawning == false)
+        {
+            _enemywaveManager.QtyUpdate();
+            Vector3 spawnPoint0 = new Vector3(Random.Range(-8f, 8f), 7, 0);
+            GameObject newEnemy0 = Instantiate(_rammerPrefab, spawnPoint0, Quaternion.identity);
+            newEnemy0.transform.parent = _enemyContainer.transform;
+            yield return new WaitForSeconds(8f);
+        }
+    }
 
 
     IEnumerator ASpawnRoutine()
@@ -136,7 +150,7 @@ public class Spawn_Manager : MonoBehaviour
         while (_stopSpawning == false)
         {
             Vector3 spawnPoint = new Vector3(Random.Range(-8f, 8f), 7, 0);
-            int randomPowerUp = Random.Range(0, 5);
+            int randomPowerUp = Random.Range(0, 4);
             GameObject newPower = Instantiate(_powerUps[randomPowerUp], spawnPoint, Quaternion.identity);
             newPower.transform.parent = _powContainer.transform;
             yield return new WaitForSeconds(Random.Range(3f, 7f));
@@ -149,7 +163,7 @@ public class Spawn_Manager : MonoBehaviour
         while (_stopSpawning == false)
         {
             Vector3 spawnPoint = new Vector3(Random.Range(-8f, 8f), 7, 0);
-            int randomSPPowerUp = Random.Range(0, 2);
+            int randomSPPowerUp = Random.Range(0, 3);
             GameObject newPower = Instantiate(_powerUpSP[randomSPPowerUp], spawnPoint, Quaternion.identity);
             newPower.transform.parent = _powContainer.transform;
             yield return new WaitForSeconds(Random.Range(15f, 20f));
@@ -161,6 +175,7 @@ public class Spawn_Manager : MonoBehaviour
         yield return new WaitForSeconds(5f);
         while (_stopSpawning == false)
         {
+            _enemywaveManager.QtyUpdate();
             Vector3 spawnpoint = new Vector3(Random.Range(-6f, 6f), 7, 0);
             GameObject newEnemy = Instantiate(_lightingEnemyPrefab, spawnpoint, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;

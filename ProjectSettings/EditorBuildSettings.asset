@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Main_Menu.unity
     guid: ebe08f85e24acff419583d4bb2251cab
   - enabled: 1
-    path: Assets/Scenes/ShieldShot_Imp.unity
-    guid: d4bae18618daead42bb62966d1cbb25a
+    path: Assets/Scenes/LightningEnemy_imp.unity
+    guid: 272276a3dc998db45915131e2ed1456d
   m_configObjects: {}

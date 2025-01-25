@@ -7,6 +7,8 @@ public class Lighting_Enemy : MonoBehaviour
     private Player _player;
     [SerializeField]
     private GameObject _lightningBeam;
+    [SerializeField]
+    private GameObject _shield;
     private EnemyWaveManager _enemywaveManager;
     [SerializeField]
     private AudioSource _audioSource;
@@ -23,6 +25,7 @@ public class Lighting_Enemy : MonoBehaviour
     private bool _enemyDeath = false;
     private bool movingDown = true;
     private bool movingLeft = true;
+    private bool _shieldactive = true;
     void Start()
     {
         _enemywaveManager = GameObject.Find("EnemyWaveManager").GetComponent<EnemyWaveManager>();
@@ -85,42 +88,65 @@ public class Lighting_Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        
+      
 
-        if (other.tag == "Laser")
+        if (other.tag == "Laser" )
         {
-            Destroy(other.gameObject);
-            if (_player != null)
+            if (_shieldactive == true)
             {
-                _player.AddScore(Random.Range(5, 10));
+                _shield.SetActive(false);
+                _shieldactive = false;
+
             }
-            _lightningBeam.SetActive(false);
-            Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
-            _speed = 0.2f;
-            _audioSource.Play();
-            _enemywaveManager.CountUpdate();
-            _enemyDeath = true;
-            Destroy(GetComponent<Collider2D>());
-            
-            Destroy(this.gameObject, 2.4f);
+            else
+            {
+                Destroy(other.gameObject);
+                if (_player != null)
+                {
+                    _player.AddScore(Random.Range(5, 10));
+                }
+                _lightningBeam.SetActive(false);
+                Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+
+                _speed = 0.2f;
+                _audioSource.Play();
+                _enemywaveManager.CountUpdate();
+                _enemyDeath = true;
+                Destroy(GetComponent<Collider2D>());
+
+                Destroy(this.gameObject, 2.4f);
+            }
+           
 
         }
 
-        if (other.tag == "Shieldshot")
+        if (other.tag == "Shieldshot" )
         {
-            if (_player != null)
+            if (_shieldactive == true)
             {
-                _player.AddScore(Random.Range(5, 10));
+                _shield.SetActive(false);
+                _shieldactive = false;
+
             }
-            _lightningBeam.SetActive(false);
-            Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
-            _speed = 0.2f;
-            _audioSource.Play();
-            _enemywaveManager.CountUpdate();
-            _enemyDeath = true;
-            Destroy(GetComponent<Collider2D>());
-            
-            Destroy(this.gameObject, 2.4f);
+            else
+            {
+
+                if (_player != null)
+                {
+                    _player.AddScore(Random.Range(5, 10));
+                }
+                _lightningBeam.SetActive(false);
+                Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+
+                _speed = 0.2f;
+                _audioSource.Play();
+                _enemywaveManager.CountUpdate();
+                _enemyDeath = true;
+                Destroy(GetComponent<Collider2D>());
+
+                Destroy(this.gameObject, 2.4f);
+
+            }
 
         }
     }
@@ -153,4 +179,6 @@ public class Lighting_Enemy : MonoBehaviour
 
         }
     }
+
+   
 }

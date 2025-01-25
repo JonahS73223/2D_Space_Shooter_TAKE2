@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 5109676853614170556}
   m_Layer: 0
   m_Name: H.Regen icon
-  m_TagString: Untagged
+  m_TagString: Powerup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
