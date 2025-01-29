@@ -75,5 +75,22 @@ public class Asteroids : MonoBehaviour
             Destroy(this.gameObject, 0.75f);
         }
 
+        if (other.tag == "H.Missle")
+        {
+            Destroy(other.gameObject);
+            if (_player != null)
+            {
+                _player.AddScore(Random.Range(5, 10));
+            }
+
+            Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+            _speed = 0.2f;
+            _audioSource.Play();
+            
+            Destroy(GetComponent<Collider2D>());
+
+            Destroy(this.gameObject, 0.75f);
+
+        }
     }
 }

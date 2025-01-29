@@ -6,9 +6,17 @@ public class EnemyRam : MonoBehaviour
 {
     private Transform _targetPlayer;
     private float _speed = 2f;
-    [SerializeField]
-    private GameObject player;
+    private float _dodgeRate = 1.0f;
     
+
+    private bool _isLaserDodgeEnabeled = true;
+
+
+    [SerializeField]
+    private float _laserCastRadius = .5f;
+    [SerializeField]
+    private float _laserCastDistance = 5.0f;
+
     void Start()
     {
         
@@ -21,8 +29,11 @@ public class EnemyRam : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-           
-            
+        if (_isLaserDodgeEnabeled == true)
+        {
+            AvoidLaser();
+        }
+        
 
         transform.position += new Vector3(0, _speed * Time.deltaTime, 0);
         if (_targetPlayer != null)
@@ -44,5 +55,34 @@ public class EnemyRam : MonoBehaviour
             transform.rotation = Quaternion.Euler(Vector3.forward * (angle + offset));
         
     }
-        
+
+    void AvoidLaser()
+    {
+
+        RaycastHit2D Laserhit = Physics2D.CircleCast(transform.position, _laserCastRadius, Vector2.down, _laserCastDistance, LayerMask.GetMask("Laser"));
+
+        if (Laserhit.collider != null)
+        {
+            if (Laserhit.collider.CompareTag("Laser"))
+            {
+                transform.position = new Vector3(transform.position.x - _dodgeRate, transform.position.y, transform.position.z);
+                _dodgeRate -= .3f;
+                _isLaserDodgeEnabeled = false;
+                StartCoroutine(LaserDodgeCooldown());
+                if (_dodgeRate <= 0f)
+                {
+                    _dodgeRate = .05f;
+                }
+            }
+        }
+    }
+
+    IEnumerator LaserDodgeCooldown()
+    {
+        if (_isLaserDodgeEnabeled == false)
+        {
+            yield return new WaitForSeconds(3f);
+            _isLaserDodgeEnabeled = true;
+        }
+    }
 }

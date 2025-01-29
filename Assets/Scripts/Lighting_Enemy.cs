@@ -149,6 +149,36 @@ public class Lighting_Enemy : MonoBehaviour
             }
 
         }
+
+        if (other.tag == "H.Missle")
+        {
+            if (_shieldactive == true)
+            {
+                _shield.SetActive(false);
+                _shieldactive = false;
+
+            }
+            else
+            {
+
+                if (_player != null)
+                {
+                    _player.AddScore(Random.Range(5, 10));
+                }
+                _lightningBeam.SetActive(false);
+                Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+
+                _speed = 0.2f;
+                _audioSource.Play();
+                _enemywaveManager.CountUpdate();
+                _enemyDeath = true;
+                Destroy(GetComponent<Collider2D>());
+                Destroy(other.gameObject);
+                Destroy(this.gameObject, 2.4f);
+
+            }
+
+        }
     }
 
     IEnumerator ShrinkDown()

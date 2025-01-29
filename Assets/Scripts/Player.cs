@@ -13,6 +13,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _shieldshotPrefab;
   
+    [SerializeField]
+    private GameObject _homingMissileRedPrefab;
+  
     private float _fireRate = 0.3f;
     private float _canfire = -1;
     [SerializeField]
@@ -31,7 +34,7 @@ public class Player : MonoBehaviour
     private bool _isSpeedShotActive = false;
     private bool _isShieldActive = false;
     private bool _isShieldshotActive = false;
-    
+    private bool _isHomingMissilesActive = false;
 
     [SerializeField]
     private GameObject _leftEngine;
@@ -158,6 +161,14 @@ public class Player : MonoBehaviour
         {
             Instantiate(_trishotPrefab, transform.position, Quaternion.identity);
         }
+
+        else if (_isHomingMissilesActive == true)
+        {
+            
+
+            Instantiate(_homingMissileRedPrefab, transform.position, Quaternion.identity);
+        }
+
         else
         {
             Instantiate(_laserPrefab, transform.position, Quaternion.identity);
@@ -181,7 +192,8 @@ public class Player : MonoBehaviour
             
             Instantiate(_shieldshotPrefab, transform.position, Quaternion.identity);
         }
-      
+       
+        
         
     }
 
@@ -357,5 +369,22 @@ public class Player : MonoBehaviour
 
         _uiManager.UpdateLives(_lives);
 
+    }
+
+    public void HomingMisslesActive()
+    {
+        _isHomingMissilesActive = true;
+        _ammo = 15;
+        _uiManager.AddAMMO(15);
+        AudioSource.PlayClipAtPoint(_ammoRechargeSFX, transform.position);
+        _fireRate = 0.5f;
+        StartCoroutine(HomingMissileCooldown());
+    }
+
+    IEnumerator HomingMissileCooldown()
+    {
+        yield return new WaitForSeconds(12f);
+        _fireRate = 1f;
+        _isHomingMissilesActive = false;
     }
 }

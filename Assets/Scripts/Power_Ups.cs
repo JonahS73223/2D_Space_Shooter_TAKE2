@@ -64,6 +64,9 @@ public class Power_Ups : MonoBehaviour
                     case 6:
                         player.AmmoStealActive();
                         break;
+                    case 7:
+                        player.HomingMisslesActive();
+                        break;
                 }       
             }
 
@@ -80,9 +83,13 @@ public class Power_Ups : MonoBehaviour
 
     private void PowerupAbsorb()
     {
-        if (Input.GetKey(KeyCode.C))
+        if (_player != null)
         {
-            MoveTowardsPlayer();
+            if (Input.GetKey(KeyCode.C))
+            {
+                MoveTowardsPlayer();
+            }
         }
+        
     }
 }

@@ -125,6 +125,25 @@ public class Rammer : MonoBehaviour
             Destroy(this.gameObject, 2.4f);
 
         }
+
+        if (other.tag == "H.Missle")
+        {
+            Destroy(other.gameObject);
+            if (_player != null)
+            {
+                _player.AddScore(Random.Range(5, 10));
+            }
+
+            Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+            _speed = 0.2f;
+            _audioSource.Play();
+            _enemywaveManager.CountUpdate();
+
+            Destroy(GetComponent<Collider2D>());
+            _enemyDeath = true;
+            Destroy(this.gameObject, 2.4f);
+
+        }
     }
 
 
