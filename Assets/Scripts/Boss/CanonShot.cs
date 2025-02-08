@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrackerLaser : MonoBehaviour
+public class CanonShot : MonoBehaviour
 {
     private GameObject _player;
     private Rigidbody2D rb;
-    private float _speed = 7.0f;
+    private float _speed = 3.5f;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -20,15 +20,12 @@ public class TrackerLaser : MonoBehaviour
             float rot = Mathf.Atan2(-direction.y, -direction.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0, 0, rot);
         }
-        
-
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (transform.position.x > 8 && transform.position.x < -8)
+        if (transform.position.y < -8)
         {
             Destroy(this.gameObject);
         }
@@ -49,4 +46,3 @@ public class TrackerLaser : MonoBehaviour
 
     }
 }
-

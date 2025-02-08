@@ -60,11 +60,20 @@ public class EnemyWaveManager : MonoBehaviour
             
         }
 
+        if (_currentWave == 2)
+        {
+            _spawnManager.StartBossBattle();
+            _spawnCount = _maxEnemies[2];
+            _spawnQty = _maxEnemies[2];
+            _uiManager.UpdateEnemyQty(_maxEnemies[2]);
+        }
+
         if (_currentWave == _maxWave)
         {
             _gameManager.GameOver();
             _uiManager.GameOverSequence();
             _spawnManager.StopSpawning();
+            _spawnManager.StopSpawningPowerups();
             
         }
     }

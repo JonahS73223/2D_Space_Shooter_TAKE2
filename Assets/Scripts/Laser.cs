@@ -81,4 +81,10 @@ public class Laser : MonoBehaviour
 
 
     }
+
+
+    public bool IsEnemyLaser()
+    {
+        return _isEnemyLaser;
+    }
 }

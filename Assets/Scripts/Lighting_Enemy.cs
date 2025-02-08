@@ -5,6 +5,9 @@ using UnityEngine;
 public class Lighting_Enemy : MonoBehaviour
 {
     private Player _player;
+    
+
+
     [SerializeField]
     private GameObject _lightningBeam;
     [SerializeField]
@@ -34,7 +37,7 @@ public class Lighting_Enemy : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
 
         _startScale = transform.localScale;
-        
+
         
     }
 
@@ -90,32 +93,39 @@ public class Lighting_Enemy : MonoBehaviour
     {
       
 
-        if (other.tag == "Laser" )
+        if (other.tag == "Laser")
         {
-            if (_shieldactive == true)
-            {
-                _shield.SetActive(false);
-                _shieldactive = false;
+            Laser laser = other.transform.GetComponent<Laser>();
 
-            }
-            else
+            if (laser.IsEnemyLaser() == false)
             {
-                Destroy(other.gameObject);
-                if (_player != null)
+                if (_shieldactive == true)
                 {
-                    _player.AddScore(Random.Range(5, 10));
+                    _shield.SetActive(false);
+                    _shieldactive = false;
+
                 }
-                _lightningBeam.SetActive(false);
-                Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+                else
+                {
+                    Destroy(other.gameObject);
+                    if (_player != null)
+                    {
+                        _player.AddScore(Random.Range(5, 10));
+                    }
+                    _lightningBeam.SetActive(false);
+                    Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
 
-                _speed = 0.2f;
-                _audioSource.Play();
-                _enemywaveManager.CountUpdate();
-                _enemyDeath = true;
-                Destroy(GetComponent<Collider2D>());
+                    _speed = 0.2f;
+                    _audioSource.Play();
+                    _enemywaveManager.CountUpdate();
+                    _enemyDeath = true;
+                    Destroy(GetComponent<Collider2D>());
 
-                Destroy(this.gameObject, 2.4f);
+                    Destroy(this.gameObject, 2.4f);
+                }
             }
+
+           
            
 
         }

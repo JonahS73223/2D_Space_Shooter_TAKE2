@@ -9,6 +9,7 @@ public class Spawn_Manager : MonoBehaviour
     private GameObject _powContainer;
     [SerializeField]
     private GameObject _enemyContainer;
+    
     [SerializeField]
     private GameObject _enemyPrefab;
     [SerializeField]
@@ -18,12 +19,14 @@ public class Spawn_Manager : MonoBehaviour
     [SerializeField]
     private GameObject _rammerPrefab;
     [SerializeField]
+    private GameObject _bossPrefab;
+    [SerializeField]
     private GameObject[] _powerUps;
     [SerializeField]
     private GameObject[] _powerUpSP;
 
     [SerializeField]
-    private bool _stopSpawningPowerups;
+    private bool _stopSpawningPowerups = false;
     
     public int _enemymovementID;
     private EnemyWaveManager _enemywaveManager;
@@ -56,6 +59,14 @@ public class Spawn_Manager : MonoBehaviour
         StartCoroutine(ASpawnRoutine());
         StartCoroutine(LEnemySpawn());
         StartCoroutine(RamSpawn());
+    }
+
+    public void StartBossBattle()
+    {
+        _stopSpawning = false;
+        BossSpawn();
+        StartCoroutine(PowSpawn());
+        StartCoroutine(SpecialtySpawn());
     }
     
 
@@ -104,7 +115,7 @@ public class Spawn_Manager : MonoBehaviour
                     newEnemy2.transform.parent = _enemyContainer.transform;
                     break;
             }
-            yield return new WaitForSeconds(5.0f);
+            yield return new WaitForSeconds(8.0f);
         }
     }
 
@@ -132,13 +143,26 @@ public class Spawn_Manager : MonoBehaviour
             _asteriodPrefab.transform.localScale = new Vector3(Random.Range(0.5f, 1.0f), Random.Range(0.5f, 1.0f), 0);
             GameObject newAsteroid = Instantiate(_asteriodPrefab, spawnPoint, Quaternion.identity);
             newAsteroid.transform.parent = _enemyContainer.transform; 
-            yield return new WaitForSeconds(8.0f);
+            yield return new WaitForSeconds(12.0f);
         }
     }
     
+    public void BossSpawn()
+    {
+        _enemywaveManager.QtyUpdate();
+        Vector3 spawnPoint = new Vector3(0, 10, 0);
+        GameObject Boss = Instantiate(_bossPrefab, spawnPoint, Quaternion.identity);
+        Boss.transform.parent = _enemyContainer.transform;
+    }
+
    public void StopSpawning()
     {
         _stopSpawning = true;
+    }
+
+    public void StopSpawningPowerups()
+    {
+        _stopSpawningPowerups = true;
     }
     public void OnPlayerDeath()
     {
@@ -147,7 +171,7 @@ public class Spawn_Manager : MonoBehaviour
 
     IEnumerator PowSpawn()
     {
-        while (_stopSpawning == false)
+        while (_stopSpawningPowerups == false)
         {
             Vector3 spawnPoint = new Vector3(Random.Range(-8f, 8f), 7, 0);
             int randomPowerUp = Random.Range(0, 4);
@@ -160,7 +184,7 @@ public class Spawn_Manager : MonoBehaviour
     IEnumerator SpecialtySpawn()
     {
         yield return new WaitForSeconds(7f);
-        while (_stopSpawning == false)
+        while (_stopSpawningPowerups == false)
         {
             Vector3 spawnPoint = new Vector3(Random.Range(-8f, 8f), 7, 0);
             int randomSPPowerUp = Random.Range(0, 4);
@@ -179,7 +203,7 @@ public class Spawn_Manager : MonoBehaviour
             Vector3 spawnpoint = new Vector3(Random.Range(-6f, 6f), 7, 0);
             GameObject newEnemy = Instantiate(_lightingEnemyPrefab, spawnpoint, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
-            yield return new WaitForSeconds(8f);
+            yield return new WaitForSeconds(10f);
         }
     }
         

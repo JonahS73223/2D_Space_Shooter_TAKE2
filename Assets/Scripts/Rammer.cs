@@ -6,6 +6,7 @@ public class Rammer : MonoBehaviour
 {
     private Player _player;
     
+
     private EnemyWaveManager _enemywaveManager;
     [SerializeField]
     private AudioSource _audioSource;
@@ -35,7 +36,7 @@ public class Rammer : MonoBehaviour
 
         _startScale = transform.localScale;
 
-
+        
     }
 
     // Update is called once per frame
@@ -88,21 +89,28 @@ public class Rammer : MonoBehaviour
 
         if (other.tag == "Laser")
         {
-            Destroy(other.gameObject);
-            if (_player != null)
+            Laser laser = other.transform.GetComponent<Laser>();
+
+            if (laser.IsEnemyLaser() == false)
             {
-                _player.AddScore(Random.Range(5, 10));
+                Destroy(other.gameObject);
+                if (_player != null)
+                {
+                    _player.AddScore(Random.Range(5, 10));
+                }
+
+                Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+
+                _speed = 0f;
+                _audioSource.Play();
+                _enemywaveManager.CountUpdate();
+                _enemyDeath = true;
+                Destroy(GetComponent<Collider2D>());
+
+                Destroy(this.gameObject, 2.4f);
             }
+
            
-            Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
-
-            _speed = 0f;
-            _audioSource.Play();
-            _enemywaveManager.CountUpdate();
-            _enemyDeath = true;
-            Destroy(GetComponent<Collider2D>());
-
-            Destroy(this.gameObject, 2.4f);
 
         }
 
@@ -169,7 +177,7 @@ public class Rammer : MonoBehaviour
         {
             if (Time.time > _canFire)
             {
-                _fireRate = 0.8f;
+                _fireRate = 2f;
                 _canFire = Time.time + _fireRate;
                 GameObject enemyLaser = Instantiate(_tlaserPrefab, transform.position, Quaternion.identity);
                 Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();

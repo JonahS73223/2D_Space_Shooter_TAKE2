@@ -44,6 +44,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ' Laser_Left'
       objectReference: {fileID: 0}
+    - target: {fileID: 1385972200717455328, guid: d007dbb547f95a048b763e7b1ad2bd45,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5564625756113479788, guid: d007dbb547f95a048b763e7b1ad2bd45,
         type: 3}
       propertyPath: m_Color.b
@@ -133,6 +138,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Laser_Right
+      objectReference: {fileID: 0}
+    - target: {fileID: 1385972200717455328, guid: d007dbb547f95a048b763e7b1ad2bd45,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5564625756113479788, guid: d007dbb547f95a048b763e7b1ad2bd45,
         type: 3}

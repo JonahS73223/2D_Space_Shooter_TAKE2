@@ -13,6 +13,8 @@ public class Enemy : MonoBehaviour
     private AudioSource _audioSource;
     [SerializeField]
     private GameObject _laserPrefab;
+    
+    
 
 
 
@@ -29,6 +31,7 @@ public class Enemy : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<Spawn_Manager>();
         _player = GameObject.Find("Player").GetComponent<Player>();
         _audioSource = GetComponent<AudioSource>();
+        
 
         if (_player == null)
         {
@@ -47,7 +50,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
 
        
 
@@ -166,22 +169,29 @@ public class Enemy : MonoBehaviour
 
         }
 
+        
         if (other.tag == "Laser")
         {
-            Destroy(other.gameObject);
-            if (_player != null)
+            Laser laser = other.transform.GetComponent<Laser>();
+
+            if (laser.IsEnemyLaser() == false)
             {
-                _player.AddScore(Random.Range(5, 10));
+                Destroy(other.gameObject);
+                if (_player != null)
+                {
+                    _player.AddScore(Random.Range(5, 10));
+                }
+
+                _anim.SetTrigger("OnEnemyDeath");
+                _speed = 0.2f;
+                _audioSource.Play();
+                _enemywaveManager.CountUpdate();
+
+                Destroy(GetComponent<Collider2D>());
+                _enemyDeath = true;
+                Destroy(this.gameObject, 2.4f);
             }
-
-            _anim.SetTrigger("OnEnemyDeath");
-            _speed = 0.2f;
-            _audioSource.Play();
-            _enemywaveManager.CountUpdate();
-
-            Destroy(GetComponent<Collider2D>());
-            _enemyDeath = true;
-            Destroy(this.gameObject, 2.4f);
+           
 
         }
 
