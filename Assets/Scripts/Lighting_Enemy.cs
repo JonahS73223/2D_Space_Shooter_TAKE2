@@ -124,10 +124,6 @@ public class Lighting_Enemy : MonoBehaviour
                     Destroy(this.gameObject, 2.4f);
                 }
             }
-
-           
-           
-
         }
 
         if (other.tag == "Shieldshot" )

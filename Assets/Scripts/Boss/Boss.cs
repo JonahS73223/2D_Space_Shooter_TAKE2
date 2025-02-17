@@ -60,8 +60,6 @@ public class Boss : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        
-
         if (other.tag == "Laser")
         {
             Destroy(other.gameObject);
@@ -72,11 +70,6 @@ public class Boss : MonoBehaviour
 
 
             Damage();
-           
-            
-            
-            
-
         }
 
         if (other.tag == "Shieldshot")
@@ -87,13 +80,6 @@ public class Boss : MonoBehaviour
             }
 
             Damage();
-
-
-
-
-            
-           
-
         }
 
         if (other.tag == "H.Missle")
@@ -106,13 +92,6 @@ public class Boss : MonoBehaviour
 
 
             Damage();
-
-
-
-
-            
-            
-
         }
     }
 

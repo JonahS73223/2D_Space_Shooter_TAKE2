@@ -68,14 +68,6 @@ public class EnemyWaveManager : MonoBehaviour
             _uiManager.UpdateEnemyQty(_maxEnemies[2]);
         }
 
-        if (_currentWave == _maxWave)
-        {
-            _gameManager.GameOver();
-            _uiManager.GameOverSequence();
-            _spawnManager.StopSpawning();
-            _spawnManager.StopSpawningPowerups();
-            
-        }
     }
 
     public void QtyUpdate()

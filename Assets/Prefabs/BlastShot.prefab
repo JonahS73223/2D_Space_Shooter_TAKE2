@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -1911956375533355938}
   m_Layer: 0
   m_Name: BlastShot
-  m_TagString: Laser
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

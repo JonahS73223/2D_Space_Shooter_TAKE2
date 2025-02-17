@@ -51,14 +51,6 @@ public class Homing_Projectile : MonoBehaviour
             _rb.velocity = transform.right * _speed;
 
             return;
-        }
-        
-        
-        
+        } 
     }
-
-    
-    
-
-    
 }

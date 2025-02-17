@@ -14,8 +14,16 @@ public class Power_Ups : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _player = GameObject.Find("Player").GetComponent<Player>();
-       
+
+
+        _player = GameObject.FindWithTag("Player").GetComponent<Player>();
+
+        if (_player == null)
+        {
+            Debug.LogError("Player not found in the scene");
+        }
+
+
     }
 
     // Update is called once per frame
@@ -78,7 +86,11 @@ public class Power_Ups : MonoBehaviour
 
     private void MoveTowardsPlayer()
     {
-        transform.position = Vector2.Lerp(transform.position, _player.transform.position, _speed * Time.deltaTime);
+        if (_player != null)
+        {
+            transform.position = Vector2.Lerp(transform.position, _player.transform.position, _speed * Time.deltaTime);
+        }
+       
     }
 
     private void PowerupAbsorb()
