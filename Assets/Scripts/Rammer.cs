@@ -31,7 +31,7 @@ public class Rammer : MonoBehaviour
     {
         _enemywaveManager = GameObject.Find("EnemyWaveManager").GetComponent<EnemyWaveManager>();
 
-        _player = GameObject.Find("Player").GetComponent<Player>();
+        _player = GameObject.Find("Player")?.GetComponent<Player>();
         _audioSource = GetComponent<AudioSource>();
 
         _startScale = transform.localScale;
@@ -83,7 +83,7 @@ public class Rammer : MonoBehaviour
             _audioSource.Play();
             _enemyDeath = true;
             _enemywaveManager.CountUpdate();
-            Destroy(this.gameObject, 2.8f);
+            Destroy(this.gameObject, 1.0f);
 
         }
 
@@ -107,7 +107,7 @@ public class Rammer : MonoBehaviour
                 _enemyDeath = true;
                 Destroy(GetComponent<Collider2D>());
 
-                Destroy(this.gameObject, 2.4f);
+                Destroy(this.gameObject, 1.0f);
             }
 
            

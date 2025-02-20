@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _ammo = 15;
 
+    [SerializeField]
     private UI_Manager _uiManager;
     private CameraShake _cameraShake;
     private Spawn_Manager _spawnManager;
@@ -69,7 +70,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<Spawn_Manager>();
-        _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
+       // _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
         _cameraShake = GameObject.Find("Main Camera").GetComponent<CameraShake>();
         _audioSource = GetComponent<AudioSource>();
         _ammo = 15;

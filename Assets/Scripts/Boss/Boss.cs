@@ -33,7 +33,7 @@ public class Boss : MonoBehaviour
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
-        _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
+        _uiManager = GameObject.Find("UI_Canvas").GetComponent<UI_Manager>();
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<Spawn_Manager>();
         _startScale = transform.localScale;

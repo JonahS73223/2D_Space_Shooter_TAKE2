@@ -7,6 +7,7 @@ public class Homing_Projectile : MonoBehaviour
     private GameObject _targetEnemy;
     private float _speed = 8f;
     private float _rotatingSpeed = 200;
+    public float detectionRadius = 5f;
 
     Rigidbody2D _rb;
     void Start()
@@ -20,9 +21,14 @@ public class Homing_Projectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_targetEnemy == null)
+        {
+            DetectEnemy();
+        }
+        
+    
 
-
-        if (transform.position.x > 8 && transform.position.x < -8)
+            if (transform.position.x > 8 && transform.position.x < -8)
         {
             Destroy(this.gameObject);
         }
@@ -53,4 +59,30 @@ public class Homing_Projectile : MonoBehaviour
             return;
         } 
     }
+
+    void DetectEnemy()
+    {
+        
+        Collider2D[] detectedColliders = Physics2D.OverlapCircleAll(transform.position, detectionRadius);
+
+        if (detectedColliders.Length > 0)
+        {
+           
+            foreach (Collider2D collider in detectedColliders)
+            {
+                if (collider.CompareTag("Enemy"))
+                {                    
+                    _targetEnemy = collider.gameObject;
+                    Debug.Log("Enemy detected: " + _targetEnemy.name);
+                    return; 
+                }
+            }
+        }
+        else
+        {           
+            _targetEnemy = null;
+            Debug.Log("No enemies detected.");
+        }
+    }
+
 }

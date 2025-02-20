@@ -65,16 +65,19 @@ public class UI_Manager : MonoBehaviour
 
     public void UpdateLives(int currentLives)
     {
-        _livesImage.sprite = _liveSprite[currentLives];
-       
-        
-        if (currentLives == 0)
+        if (currentLives <= 0)
         {
             currentLives = 0;
             GameOverSequence();
-            
+
+        }
+        else if (currentLives > _liveSprite.Length - 1)
+        {
+            currentLives = _liveSprite.Length - 1;
         }
 
+        _livesImage.sprite = _liveSprite[currentLives];
+             
     }
 
     public void GameOverSequence()

@@ -79,36 +79,38 @@ public class Enemy : MonoBehaviour
 
     void EnemyShoot()
     {
+
+
        
-            if (_enemyDeath == true)
+            if (Time.time > _canFire && _enemyDeath == false)
             {
-                _fireRate = 0;
-                _canFire = Time.time + _fireRate;
-            }
-
-            if (_spawnManager._enemymovementID == 1)
-            {
-                _fireRate = 1.0f;
-
-            }
-            else if (_spawnManager._enemymovementID == 2)
-            {
-                _fireRate = 1.0f;
-
-            }
-
-            if (Time.time > _canFire)
-            {
-                _fireRate = Random.Range(2f, 3f);
-                _canFire = Time.time + _fireRate;
-                GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
-                Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
-
-                for (int i = 0; i < lasers.Length; i++)
+                if (_spawnManager._enemymovementID == 1)
                 {
+                     _fireRate = 1.0f;
+
+                }
+                else if (_spawnManager._enemymovementID == 2)
+                {
+                    _fireRate = 1.0f;
+
+                }
+
+                if (Time.time > _canFire)
+                {
+                    _fireRate = Random.Range(2f, 3f);
+                    _canFire = Time.time + _fireRate;
+                    GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+                    Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+
+                    for (int i = 0; i < lasers.Length; i++)
+                    {
                     lasers[i].AssignEnemyLaser();
+                    }
+
                 }
             }
+
+            
         
 
 
@@ -159,11 +161,12 @@ public class Enemy : MonoBehaviour
             {
                 player.Damage();
             }
+            _enemyDeath = true;
 
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0.2f;
             _audioSource.Play();
-            _enemyDeath = true;
+            
             _enemywaveManager.CountUpdate();
             Destroy(this.gameObject, 2.8f);
 
